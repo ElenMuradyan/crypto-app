@@ -6,15 +6,16 @@ import type { TableProps } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../util/constants/routes";
-
+import Loading from "../../components/sheard/Loading";
 import './index.css';
+import { pageSizeOptions } from "../../util/constants/pageSizeOptions";
 
 const CryptoList = () => {    
     const navigate = useNavigate();
     const [ page, setPage ] = useState<number>(0);
     const [ pageSize, setPageSize ] = useState<number>(10)
 
-        const { data, loading, error } = useFetch<CurrencyListResponseModel[]>({
+        const { data, loading } = useFetch<CurrencyListResponseModel[]>({
             url: `${requestUrls.coinsMarkets}/coins/markets?vs_currency=usd&per_page=${pageSize}&page=${page}`,
             header: {
                 'x-cg-demo-api-key': process.env.REACT_APP_CRYPTO_API_KEY
@@ -75,6 +76,10 @@ const CryptoList = () => {
         return 'no-hover';  // Apply this class to every row
       };
     
+    if(loading){
+        return(<Loading/>)
+    }
+    
     return (
     <div className="crypto_container">
         <Typography.Title style={{color: "white", textAlign: 'center', margin: 0}}>Crypto Overview</Typography.Title>
@@ -98,7 +103,7 @@ const CryptoList = () => {
         pageSize={pageSize}
         onChange={handlePageChange}
         onShowSizeChange={handlePageSizeChange}
-        pageSizeOptions={['10', '20', '50', '100']}
+        pageSizeOptions={pageSizeOptions}
         showSizeChanger
         />
         </Flex>

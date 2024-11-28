@@ -2,11 +2,11 @@ export type CurrencyDetailResponseModel = {
     id: string;
     symbol: string;
     name: string;
-    image: {
-        large: string;
-        small: string;
-        thunk: string;
-    }
-    total_supply: number;
     current_price: number;
+    market_data:{
+        max_supply: number;
+        circulating_supply: number;
+        price_change_24h: number;
+        total_supply: number;
+    }
 }

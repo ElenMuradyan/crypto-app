@@ -1,0 +1,9 @@
+.Card{
+    margin: auto;
+    background-color: rgba(17, 153, 250, 0.05);
+}
+.detail_container{
+    padding-top: 50px ;
+    background-color: #010118;
+    padding-bottom: 50px ;
+}

@@ -1,4 +1,4 @@
-import { Flex } from 'antd';
+import { Flex, Select } from 'antd';
 import './index.css';
 
 const Header=()=>{
@@ -8,6 +8,8 @@ const Header=()=>{
        <div>
          Logo
        </div>
+       <Select
+       />
        </Flex>
     </div>
          );
