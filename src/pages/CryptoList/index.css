@@ -1,0 +1,44 @@
+.crypto_container {
+    width: 100%;
+    background-color: #010118;
+}
+
+.crypto_container .ant-table {
+    width: 90%;
+    margin: 10px auto;
+    background-color: #010118;  
+    border: none;  
+}
+
+.crypto_container .ant-table th,
+.crypto_container .ant-table td {
+    color: white;
+    background-color: #010118; 
+    border: none;
+}
+
+.crypto_container .ant-table-tbody > tr > td {
+    border-bottom: 1px solid white;
+}
+
+.crypto_container .ant-table-thead > tr > th {
+    border-bottom: 1px solid white;
+}
+
+.crypto_container .no-hover:hover {
+    background-color: #010118 !important; 
+    transition: none !important;          
+}
+
+.crypto_container .no-hover > td {
+    background-color: #010118 !important;
+    transition: none !important;           
+}
+
+.crypto_container .no-hover:hover > td {
+    background-color: #061121 !important; 
+}
+.crypto_pagination{
+    background-color:  #01124c;
+    color: white;
+}
