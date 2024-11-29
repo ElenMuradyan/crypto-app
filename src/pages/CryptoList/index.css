@@ -39,7 +39,3 @@
 .crypto_container .no-hover:hover > td {
     background-color: #061121 !important; 
 }
-.crypto_pagination{
-    background-color:  #01124c;
-    color: white;
-}

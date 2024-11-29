@@ -1,79 +1,81 @@
 import { requestUrls } from "../../util/constants/requestUrls";
 import { useFetch } from "../../hooks/useFetch";
 import { CurrencyListResponseModel } from "../../typescript/types/CurrencyListResponseModel";
-import { Flex, Pagination, Table, Typography } from "antd";
+import { Table, Typography } from "antd";
 import type { TableProps } from "antd";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { currencySelectOptions } from "../../util/constants/currencySelectOptions";
 import { ROUTE_PATHS } from "../../util/constants/routes";
 import Loading from "../../components/sheard/Loading";
+import { DEFAULT_PAGINATION } from "../../util/constants/pagination";
+import { useQueryParam } from "../../hooks/useQueryParam";
+
 import './index.css';
-import { pageSizeOptions } from "../../util/constants/pageSizeOptions";
 
 const CryptoList = () => {    
+    const location = useLocation(); 
     const navigate = useNavigate();
-    const [ page, setPage ] = useState<number>(0);
-    const [ pageSize, setPageSize ] = useState<number>(10)
+    const { getQueryParam, setQueryParam } = useQueryParam();
 
-        const { data, loading } = useFetch<CurrencyListResponseModel[]>({
-            url: `${requestUrls.coinsMarkets}/coins/markets?vs_currency=usd&per_page=${pageSize}&page=${page}`,
-            header: {
-                'x-cg-demo-api-key': process.env.REACT_APP_CRYPTO_API_KEY
-            }
-        });
+    const page = getQueryParam('page') || DEFAULT_PAGINATION.page;
+    const pageSize = getQueryParam('pageSize') || DEFAULT_PAGINATION.pageSize;
+    const currency = getQueryParam('currency') || currencySelectOptions[0].value;
+
+    const { data, loading } = useFetch<CurrencyListResponseModel[]>({
+        url: `${requestUrls.coinsMarkets}/coins/markets?vs_currency=${currency}&per_page=${pageSize}&page=${page}`,
+        header: {
+            'x-cg-demo-api-key': process.env.REACT_APP_CRYPTO_API_KEY
+        }
+    });
     
-    const columns: TableProps<CurrencyListResponseModel>['columns'] = [
-        {
-            title: '#ID',
-            dataIndex: 'id',
-            key: 'id'
-        },
-        {
-            title: '',
-            dataIndex: 'symbol',
-            key: 'symbol'
-        },
-        {
-            title: 'Image',
-            dataIndex: 'image',
-            key: 'image',
-            render: value => {
-                return(<img src={value} width={50} height={50}/>)           
-            }
-        },
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name'
-        },
-        {
-            title: 'Price Change 24',
-            dataIndex: 'price_change_24h',
-            key: 'price_change_24h',
-            render: (value) => `${value.toFixed(2)}%`,
-        },
-        {
-            title: 'Current Price',
-            dataIndex: 'current_price',
-            key: 'current_price',
-            render: (value) => `${value.toFixed(2)}`,
-        },
-    ]
+    const columns: TableProps<CurrencyListResponseModel>['columns'] = useMemo(() => {
+        return [
+            {
+                title: '#ID',
+                dataIndex: 'id',
+                key: 'id'
+            },
+            {
+                title: '',
+                dataIndex: 'symbol',
+                key: 'symbol'
+            },
+            {
+                title: 'Image',
+                dataIndex: 'image',
+                key: 'image',
+                render: value => {
+                    return(<img src={value} width={50} height={50} alt='example'/>)           
+                }
+            },
+            {
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name'
+            },
+            {
+                title: 'Price Change 24',
+                dataIndex: 'price_change_24h',
+                key: 'price_change_24h',
+                render: (value) => `${value.toFixed(2)}%`,
+            },
+            {
+                title: 'Current Price',
+                dataIndex: 'current_price',
+                key: 'current_price',
+                render: (value) => `${value.toFixed(2)}`,
+            },
+        ]
+    }, []);
 
     const handleNavigataDetailPage = (row: CurrencyListResponseModel) => {
-        navigate(`${ROUTE_PATHS.CRYPTO_DETAIL}/${row.id}`)
-    }
-
-    const handlePageChange = (page: number) => {
-        setPage(page);
-    }
-
-    const handlePageSizeChange = (page: number, pageSize: number) => {
-        setPageSize(pageSize);
+        const newUrl = `${ROUTE_PATHS.CRYPTO_DETAIL}/${row.id}${location.search}`;
+        navigate(newUrl);
     }
 
     const rowClassName = () => {
-        return 'no-hover';  // Apply this class to every row
+        return 'no-hover'; 
       };
     
     if(loading){
@@ -88,25 +90,23 @@ const CryptoList = () => {
         dataSource={data || []}
         columns={columns}
         loading={loading}
-        pagination={false}
         rowClassName={rowClassName}
+        pagination={{
+            total:100,
+            current: +page,
+            pageSize: +pageSize,
+            onChange: (page, pageSize) => {
+                setQueryParam({
+                    page, pageSize
+                })
+            }
+        }}
         onRow={row => {
             return{
                 onClick: () => handleNavigataDetailPage(row)
             }
         }}
         />
-        <Flex align="center" justify="center" style={{width: '100%', height:'50px'}} className="crypto_pagination">
-        <Pagination
-        total={100}
-        current={page}
-        pageSize={pageSize}
-        onChange={handlePageChange}
-        onShowSizeChange={handlePageSizeChange}
-        pageSizeOptions={pageSizeOptions}
-        showSizeChanger
-        />
-        </Flex>
     </div>
 )
 }

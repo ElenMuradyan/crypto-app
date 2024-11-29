@@ -1,4 +1,5 @@
 import { Spin } from "antd";
+
 import './index.css';
 
 const Loading = () => {

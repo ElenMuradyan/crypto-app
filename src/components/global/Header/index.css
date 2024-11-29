@@ -3,5 +3,8 @@
     height: 50px;
     color: white;
     background-color: #061121;
-    padding: 16px;
+    padding: 10px;
+}
+.select{
+    margin-right: 30px;
 }

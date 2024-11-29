@@ -1,9 +1,11 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import CryptoList from './pages/CryptoList';
 import CryptoDetail from './pages/CryptoDetail';
 import { ROUTE_PATHS } from './util/constants/routes';
-import './styles/global.css'
 import MainLayout from './layouts/MainLayout';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import './styles/global.css';
+
 function App() {
   return (
     <div className="App">

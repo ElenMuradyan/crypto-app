@@ -10,18 +10,25 @@ import { useParams } from 'react-router-dom';
 import { requestUrls } from '../../../util/constants/requestUrls';
 import { useFetch } from '../../../hooks/useFetch';
 import Loading from '../Loading';
-import './index.css';
 import { Select } from 'antd';
 import { timeSelectOptions, times } from '../../../util/constants/timeSelectOptions';
 import { useState } from 'react';
 import { TimeTypes } from '../../../typescript/types/TimeType';
+import { useQueryParam } from '../../../hooks/useQueryParam';
+import { currencySelectOptions } from '../../../util/constants/currencySelectOptions';
+
+import './index.css';
 
 const CryptoDiagram = () => {
     const { id } = useParams();
+    const { getQueryParam } = useQueryParam();
     const [ time, setTime ] = useState<number>(1);
     const [ selectedTime, setSelectedTime ] = useState<TimeTypes>('day');
+
+    const currency = getQueryParam('currency') || currencySelectOptions[0].value;
+
     const { data, loading } = useFetch<CurrencyDiagramResponseModel>({
-        url: `${requestUrls.coinsMarkets}/coins/${id}/market_chart?vs_currency=usd&days=${time}`,
+        url: `${requestUrls.coinsMarkets}/coins/${id}/market_chart?vs_currency=${currency}&days=${time}`,
         header: {
             'x-cg-demo-api-key': process.env.REACT_APP_CRYPTO_API_KEY,
         }
@@ -113,7 +120,7 @@ const CryptoDiagram = () => {
 
             <AxisLeft
             scale={yScale}
-            label="Price (USD)"
+            label={`Price ${currency.toUpperCase()}`}
             stroke="white"
             tickStroke="white"
             tickLabelProps={() => ({
