@@ -5,7 +5,6 @@ import { GridRows, GridColumns } from '@visx/grid';
 import { Group } from '@visx/group';
 import { curveMonotoneX } from '@visx/curve';
 import { CurrencyDiagramResponseModel } from '../../../typescript/types/CurrencyDiagramResponseModel';
-import { LinearGradient } from '@visx/gradient';
 import { useParams } from 'react-router-dom';
 import { requestUrls } from '../../../util/constants/requestUrls';
 import { useFetch } from '../../../hooks/useFetch';
@@ -73,13 +72,6 @@ const CryptoDiagram = () => {
         <>
         <svg width={width} height={height} className="crypto-diagram-svg">
         <defs>
-            <LinearGradient
-            id="dark-blue-gradient"
-            from="rgba(0, 31, 61, 0.7)"  
-                to="rgba(30, 60, 114, 0.7)"
-            fromOffset="0%"
-            toOffset="100%"
-            />
         </defs>
         <Group left={margin.left} top={margin.top}>
             <GridRows
@@ -98,7 +90,7 @@ const CryptoDiagram = () => {
             data={mappedData}
             x={(d) => xScale(d.x)}  
             y={(d) => yScale(d.y)}  
-            fill="url(#dark-blue-gradient)"  
+            fill='darkblue'
             stroke="none"  
             curve={curveMonotoneX}
             yScale={yScale}
