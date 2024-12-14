@@ -31,7 +31,7 @@
     "install": "npm run custom-install-script",
     "custom-install-script": "echo 'Custom install script executed'",
     "test": "react-scripts test",
-    "build": "react-scripts build",
+    "build": "react-scripts build 2>/dev/null",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
