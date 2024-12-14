@@ -14,5 +14,4 @@ export const currencySelectOptions = [
     { label: "ZAR", value: "zar" },
     { label: "SGD", value: "sgd" },
     { label: "KRW", value: "krw" },
-    { label: "AMD", value: "amd" },
 ];
